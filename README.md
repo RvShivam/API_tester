@@ -3,8 +3,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Go Version](https://img.shields.io/badge/Go-1.22-blue)
 ![Last Commit](https://img.shields.io/github/last-commit/RvShivam/API_tester)
-![Repo Size](https://img.shields.io/github/repo-size/RvShivam/API_tester)
-![Lines of code](https://img.shields.io/tokei/lines/github/RvShivam/API_tester)
 ![Top Lang](https://img.shields.io/github/languages/top/RvShivam/API_tester)
 
 

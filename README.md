@@ -1,6 +1,15 @@
-# API Tester CLI
+# API Tester CLI 
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Go Version](https://img.shields.io/badge/Go-1.22-blue)
+![Last Commit](https://img.shields.io/github/last-commit/RvShivam/API_tester)
+![Repo Size](https://img.shields.io/github/repo-size/RvShivam/API_tester)
+![Lines of code](https://img.shields.io/tokei/lines/github/RvShivam/API_tester)
+![Top Lang](https://img.shields.io/github/languages/top/RvShivam/API_tester)
+
 
 🚀 **API Tester** is a lightweight, terminal-based API testing tool built with Go and Cobra that emulates core features of Postman in a streamlined command-line interface. Perfect for developers who prefer working in the terminal or need to integrate API testing into scripts and automation workflows.
+
 
 ## ✨ Features
 
@@ -207,6 +216,9 @@ API_tester/
 └── README.md        # This file
 ```
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
 
 
 ⭐ **Star this repository if you find it helpful!**

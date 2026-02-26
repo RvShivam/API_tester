@@ -12,6 +12,9 @@
 ## ✨ Features
 
 - **Full REST Method Support**: GET, POST, PUT, DELETE, PATCH requests
+- **Environment Variables**: Use `--env` to load environment configs and interpolate variables (e.g., `{{base_url}}`)
+- **Collections**: Save, list, run, and delete named HTTP requests
+- **Stress Testing**: Load test API endpoints with concurrent requests and view detailed metrics
 - **Flag-based Configuration**: Easy-to-use command-line flags for headers, body, and authentication
 - **Smart JSON Handling**: Automatic JSON formatting and validation for request bodies
 - **Pretty Response Formatting**: Automatically formats JSON responses with proper indentation
@@ -106,6 +109,31 @@ apitester.exe patch [URL] [flags]
 - `--headers`: Comma-separated headers (key:value,key:value)
 - `--auth`: Authorization header (e.g., 'Bearer token' or 'Basic base64')
 
+### Collection Management
+Manage saved request collections to easily reuse frequently executed requests.
+```sh
+apitester.exe collection [command]
+```
+
+**Available Commands:**
+- `save`: Save a request to the collection
+- `list`: List all saved requests
+- `run`: Run a saved request by name
+- `delete`: Delete a saved request by name
+
+### Stress Testing
+Hammer an API endpoint with concurrent requests to measure its performance.
+```sh
+apitester.exe stress [URL] [flags]
+```
+
+**Flags:**
+- `--concurrency`: Number of concurrent workers (default 10)
+- `--duration`: Duration of the test (e.g. 10s, 1m, 30s) (default "10s")
+- `--requests`: Total number of requests to send (overrides `--duration`)
+- `--method`: HTTP method to use (default "GET")
+- `--body`, `--headers`, `--auth`: Standard request configuration flags
+
 ## 💡 Examples
 
 ### Simple GET Request
@@ -136,6 +164,12 @@ apitester.exe delete https://api.example.com/users/123 --auth "Bearer your_token
 ### PATCH Request
 ```sh
 apitester.exe patch https://api.example.com/users/123 --body '{"status":"active"}' --headers "Content-Type:application/json"
+```
+
+### Stress Testing
+```sh
+apitester.exe stress https://httpbin.org/get --concurrency 20 --duration 15s
+apitester.exe stress "{{base_url}}/users" --env dev.json --concurrency 30 --duration 30s
 ```
 
 ## 🎯 Advanced Usage
@@ -169,6 +203,22 @@ If you don't specify the `--body` flag for POST, PUT, or PATCH requests, the too
 ```sh
 apitester.exe post https://httpbin.org/post
 # Will prompt: "Enter JSON body (end with Ctrl+D or Ctrl+Z on Windows):"
+```
+
+### Environment Variables
+You can load variables from a JSON environment file and interpolate them into your URLs or headers using double curly braces (e.g., `{{variable_name}}`).
+
+1. Create a variable file like `dev.json`:
+```json
+{
+  "base_url": "https://api.example.com",
+  "token": "my_secret_token"
+}
+```
+
+2. Run a command with the `--env` flag:
+```sh
+apitester.exe get "{{base_url}}/users" --env dev.json --auth "Bearer {{token}}"
 ```
 
 ## 📊 Response Format
@@ -206,7 +256,9 @@ API_tester/
 │   ├── post.go      # POST command implementation
 │   ├── put.go       # PUT command implementation
 │   ├── delete.go    # DELETE command implementation
-│   └── patch.go     # PATCH command implementation
+│   ├── patch.go     # PATCH command implementation
+│   ├── collection.go # Collection command implementation
+│   └── stress.go    # Stress testing command implementation
 ├── internal/
 │   └── request.go   # Core HTTP request handling logic
 ├── main.go          # Application entry point

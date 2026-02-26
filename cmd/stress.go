@@ -33,10 +33,10 @@ percentiles (Min, Max, Avg, P50, P95, P99).`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		url := args[0]
+		url = Env.Interpolate(url)
 		if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
 			url = "https://" + url
 		}
-		url = Env.Interpolate(url)
 
 		method := strings.ToUpper(stressMethodFlag)
 

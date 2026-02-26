@@ -23,6 +23,7 @@ var putCmd = &cobra.Command{
 		if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
 			url = "https://" + url
 		}
+		url = Env.Interpolate(url)
 
 		body := putBodyFlag
 		if body == "" {
@@ -33,6 +34,7 @@ var putCmd = &cobra.Command{
 				return
 			}
 		}
+		body = Env.Interpolate(body)
 
 		if body != "" {
 			if err := internal.ValidateJSON(body); err != nil {
@@ -41,12 +43,17 @@ var putCmd = &cobra.Command{
 			}
 		}
 
+		headers := parseHeaders(headersFlag)
+		for k, v := range headers {
+			headers[k] = Env.Interpolate(v)
+		}
+
 		opts := internal.RequestOptions{
 			Method:  "PUT",
 			URL:     url,
-			Headers: parseHeaders(headersFlag),
+			Headers: headers,
 			Body:    body,
-			Auth:    authFlag,
+			Auth:    Env.Interpolate(authFlag),
 			Timeout: 15 * time.Second,
 		}
 

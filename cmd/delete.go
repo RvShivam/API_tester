@@ -18,12 +18,18 @@ var deleteCmd = &cobra.Command{
 		if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
 			url = "https://" + url
 		}
+		url = Env.Interpolate(url)
+
+		headers := parseHeaders(headersFlag)
+		for k, v := range headers {
+			headers[k] = Env.Interpolate(v)
+		}
 
 		opts := internal.RequestOptions{
 			Method:  "DELETE",
 			URL:     url,
-			Headers: parseHeaders(headersFlag),
-			Auth:    authFlag,
+			Headers: headers,
+			Auth:    Env.Interpolate(authFlag),
 			Timeout: 10 * time.Second,
 		}
 

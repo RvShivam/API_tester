@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -26,35 +24,27 @@ var postCmd = &cobra.Command{
 			url = "https://" + url
 		}
 
-		var body string
-		if bodyFlag != "" {
-			body = bodyFlag
-		} else {
-			// Read the body from standard input
-			fmt.Println("Enter JSON body (end with Ctrl+D or Ctrl+Z on Windows):")
-			var buf bytes.Buffer
-			if _, err := buf.ReadFrom(os.Stdin); err != nil {
-				fmt.Fprintf(os.Stderr, "Error reading request body: %v\n", err)
+		body := bodyFlag
+		if body == "" {
+			var err error
+			body, err = internal.ReadBodyInteractive()
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
 				return
 			}
-			body = strings.TrimSpace(buf.String())
 		}
 
-		// Validate JSON if provided
 		if body != "" {
-			var js map[string]interface{}
-			if err := json.Unmarshal([]byte(body), &js); err != nil {
-				fmt.Fprintf(os.Stderr, "Invalid JSON body: %v\n", err)
+			if err := internal.ValidateJSON(body); err != nil {
+				fmt.Fprintln(os.Stderr, err)
 				return
 			}
 		}
-
-		headers := parseHeaders(headersFlag)
 
 		opts := internal.RequestOptions{
 			Method:  "POST",
 			URL:     url,
-			Headers: headers,
+			Headers: parseHeaders(headersFlag),
 			Body:    body,
 			Auth:    authFlag,
 			Timeout: 15 * time.Second,
@@ -66,18 +56,7 @@ var postCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Printf("Status: %s\n", resp.Status)
-		fmt.Printf("Duration: %v\n", duration)
-
-		// Format JSON response if possible
-		var pretty bytes.Buffer
-		if json.Indent(&pretty, respBody, "", "  ") == nil {
-			fmt.Println("Response (JSON):")
-			fmt.Println(pretty.String())
-		} else {
-			fmt.Println("Response (raw):")
-			fmt.Println(string(respBody))
-		}
+		internal.PrintResponse(resp, respBody, duration)
 	},
 }
 

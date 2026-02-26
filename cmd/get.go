@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -26,34 +24,21 @@ var getCmd = &cobra.Command{
 			url = "https://" + url
 		}
 
-		headers := parseHeaders(headersFlag)
-
 		opts := internal.RequestOptions{
 			Method:  "GET",
 			URL:     url,
-			Headers: headers,
+			Headers: parseHeaders(headersFlag),
 			Auth:    authFlag,
 			Timeout: 10 * time.Second,
 		}
 
 		resp, body, duration, err := internal.SendRequest(opts)
-
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
 		}
 
-		fmt.Println("Status:", resp.Status)
-		fmt.Println("Time taken:", duration)
-
-		var pretty bytes.Buffer
-		if json.Indent(&pretty, body, "", "  ") == nil {
-			fmt.Println("Response (JSON):")
-			fmt.Println(pretty.String())
-		} else {
-			fmt.Println("Response (raw):")
-			fmt.Println(string(body))
-		}
+		internal.PrintResponse(resp, body, duration)
 	},
 }
 

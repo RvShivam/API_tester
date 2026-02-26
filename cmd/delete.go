@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -21,12 +19,10 @@ var deleteCmd = &cobra.Command{
 			url = "https://" + url
 		}
 
-		headers := parseHeaders(headersFlag)
-
 		opts := internal.RequestOptions{
 			Method:  "DELETE",
 			URL:     url,
-			Headers: headers,
+			Headers: parseHeaders(headersFlag),
 			Auth:    authFlag,
 			Timeout: 10 * time.Second,
 		}
@@ -37,18 +33,7 @@ var deleteCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Println("Status:", resp.Status)
-		fmt.Println("Time taken:", duration)
-
-		// Format JSON response if possible
-		var pretty bytes.Buffer
-		if json.Indent(&pretty, body, "", "  ") == nil {
-			fmt.Println("Response (JSON):")
-			fmt.Println(pretty.String())
-		} else {
-			fmt.Println("Response (raw):")
-			fmt.Println(string(body))
-		}
+		internal.PrintResponse(resp, body, duration)
 	},
 }
 

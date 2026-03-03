@@ -8,6 +8,13 @@
 
 🚀 **API Tester** is a lightweight, terminal-based API testing tool built with Go and Cobra that emulates core features of Postman in a streamlined command-line interface. Perfect for developers who prefer working in the terminal or need to integrate API testing into scripts and automation workflows.
 
+### 🌐 Live Demo
+
+> Try it directly in your browser — no installation required!
+>
+> **[▶ Open Web Terminal](https://apitester-web.onrender.com)**
+>
+> *Architecture Proof: The browser terminal connects via WebSocket to a Go backend, which natively executes the `apitester` Linux binary using `os/exec`. Run `apitester version` in the web UI to verify the backend OS/Architecture!*
 
 ## ✨ Features
 
@@ -140,14 +147,6 @@ apitester.exe stress [URL] [flags]
 ```sh
 apitester.exe get https://httpbin.org/get
 ```
-
-### 🌐 Live Demo
-
-> Try it directly in your browser — no installation required!
->
-> **[▶ Open Web Terminal](https://apitester-web.onrender.com)**
->
-> *Architecture Proof: The browser terminal connects via WebSocket to a Go backend, which natively executes the `apitester` Linux binary using `os/exec`. Run `apitester version` in the web UI to verify the backend OS/Architecture!*
 
 ### GET Request with Headers and Authentication
 ```sh

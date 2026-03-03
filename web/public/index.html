@@ -45,6 +45,12 @@
       <h2 class="sidebar-title">🚀 Demo Commands</h2>
       <p class="sidebar-subtitle">Click any command to run it instantly</p>
 
+      <div class="arch-proof">
+        <strong>Architecture Proof</strong>
+        This terminal uses WebSockets to natively execute the actual Go CLI binary via <code>os/exec</code> on the
+        backend.
+      </div>
+
       <div class="demo-group">
         <h3 class="demo-group-title">Basic Requests</h3>
         <button class="demo-btn" id="demo-get" data-command="get https://httpbin.org/get">
@@ -126,9 +132,7 @@
       </div>
 
       <div class="sidebar-footer">
-        <p><strong>Architecture Proof:</strong> This terminal uses WebSockets to natively execute the actual Go CLI
-          binary via <code>os/exec</code> on the backend.</p>
-        <p style="margin-top: 8px;">Powered by <strong>httpbin.org</strong> — a live request inspection service.</p>
+        <p>Powered by <strong>httpbin.org</strong> — a live request inspection service.</p>
       </div>
     </aside>
 

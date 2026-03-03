@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -76,15 +77,18 @@ func SendRequest(opts RequestOptions) (*http.Response, []byte, time.Duration, er
 	return resp, body, duration, nil
 }
 
-// ReadBodyInteractive reads a JSON body from stdin with a user prompt.
-// Returns empty string if nothing is entered.
+// ReadBodyInteractive reads a single line of JSON from stdin with a user prompt.
+// The user types their JSON body and presses Enter — no Ctrl+D/Z needed.
 func ReadBodyInteractive() (string, error) {
-	fmt.Println("Enter JSON body (end with Ctrl+D or Ctrl+Z on Windows):")
-	var buf bytes.Buffer
-	if _, err := buf.ReadFrom(os.Stdin); err != nil {
+	fmt.Print("Enter JSON body: ")
+	scanner := bufio.NewScanner(os.Stdin)
+	if scanner.Scan() {
+		return strings.TrimSpace(scanner.Text()), nil
+	}
+	if err := scanner.Err(); err != nil {
 		return "", fmt.Errorf("error reading request body: %w", err)
 	}
-	return strings.TrimSpace(buf.String()), nil
+	return "", nil
 }
 
 // ValidateJSON returns an error if the provided string is not valid JSON.

@@ -1,0 +1,5 @@
+{
+    "base_url": "https://httpbin.org",
+    "token": "demo_token_123",
+    "version": "v1"
+}

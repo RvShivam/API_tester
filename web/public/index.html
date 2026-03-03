@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Tester CLI — Live Demo</title>
+  <meta name="description"
+    content="Interactive web terminal for API Tester CLI. Run live GET, POST, stress tests and more directly in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">API<span class="logo-accent">Tester</span> CLI</span>
+      </div>
+      <div class="header-badges">
+        <span class="badge"><span class="dot dot-green"></span>Server Online</span>
+        <a class="badge badge-link" href="https://github.com/RvShivam/API_tester" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <main class="layout">
+
+    <!-- Sidebar: Demo Commands -->
+    <aside class="sidebar">
+      <h2 class="sidebar-title">🚀 Demo Commands</h2>
+      <p class="sidebar-subtitle">Click any command to run it instantly</p>
+
+      <div class="demo-group">
+        <h3 class="demo-group-title">Basic Requests</h3>
+        <button class="demo-btn" id="demo-get" data-command="get https://httpbin.org/get">
+          <span class="method-badge get">GET</span>
+          <span class="demo-label">Simple GET Request</span>
+        </button>
+        <button class="demo-btn" id="demo-post" data-cmd="post https://httpbin.org/post"
+          data-body='{"name":"recruiter","role":"hiring"}' data-headers="Content-Type:application/json">
+          <span class="method-badge post">POST</span>
+          <span class="demo-label">POST with JSON Body</span>
+        </button>
+        <button class="demo-btn" id="demo-put" data-cmd="put https://httpbin.org/put" data-body='{"status":"updated"}'
+          data-auth="Bearer demo_token_123">
+          <span class="method-badge put">PUT</span>
+          <span class="demo-label">PUT with Auth Token</span>
+        </button>
+        <button class="demo-btn" id="demo-delete" data-cmd="delete https://httpbin.org/delete"
+          data-auth="Bearer demo_token_123">
+          <span class="method-badge delete">DELETE</span>
+          <span class="demo-label">DELETE with Auth</span>
+        </button>
+        <button class="demo-btn" id="demo-patch" data-cmd="patch https://httpbin.org/patch"
+          data-body='{"field":"new_value"}'>
+          <span class="method-badge patch">PATCH</span>
+          <span class="demo-label">PATCH Request</span>
+        </button>
+      </div>
+
+      <div class="demo-group">
+        <h3 class="demo-group-title">Advanced Features</h3>
+        <button class="demo-btn" id="demo-headers" data-cmd="get https://httpbin.org/headers"
+          data-headers="X-App-Name:APITester,X-Version:2.0,Accept:application/json">
+          <span class="method-badge get">GET</span>
+          <span class="demo-label">Multiple Headers</span>
+        </button>
+        <button class="demo-btn" id="demo-stress"
+          data-command="stress https://httpbin.org/get --concurrency 10 --requests 50">
+          <span class="method-badge stress">STRESS</span>
+          <span class="demo-label">Load Test (50 reqs)</span>
+        </button>
+        <button class="demo-btn" id="demo-env" data-cmd="get {{base_url}}/get"
+          data-headers="Authorization:Bearer {{token}}" data-extra="--env demo-env.json">
+          <span class="method-badge env">ENV</span>
+          <span class="demo-label">Environment Variables</span>
+        </button>
+        <button class="demo-btn" id="demo-status" data-command="get https://httpbin.org/status/404">
+          <span class="method-badge get">GET</span>
+          <span class="demo-label">Handle 404 Response</span>
+        </button>
+        <button class="demo-btn" id="demo-delay" data-command="get https://httpbin.org/delay/2">
+          <span class="method-badge get">GET</span>
+          <span class="demo-label">Latency Measurement</span>
+        </button>
+      </div>
+
+      <div class="demo-group">
+        <h3 class="demo-group-title">Collections &amp; Help</h3>
+        <button class="demo-btn"
+          data-command="collection save --name demo-get --method GET --url https://httpbin.org/get">
+          <span class="method-badge collection">SAVE</span>
+          <span class="demo-label">Save a Collection</span>
+        </button>
+        <button class="demo-btn" data-command="collection list">
+          <span class="method-badge collection">LIST</span>
+          <span class="demo-label">List Collections</span>
+        </button>
+        <button class="demo-btn" data-command="collection run demo-get">
+          <span class="method-badge collection">RUN</span>
+          <span class="demo-label">Run a Collection</span>
+        </button>
+        <button class="demo-btn" data-command="collection delete demo-get">
+          <span class="method-badge collection">DEL</span>
+          <span class="demo-label">Delete a Collection</span>
+        </button>
+        <button class="demo-btn" data-command="--help">
+          <span class="method-badge help">HELP</span>
+          <span class="demo-label">Show All Commands</span>
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <p><strong>Architecture Proof:</strong> This terminal uses WebSockets to natively execute the actual Go CLI
+          binary via <code>os/exec</code> on the backend.</p>
+        <p style="margin-top: 8px;">Powered by <strong>httpbin.org</strong> — a live request inspection service.</p>
+      </div>
+    </aside>
+
+    <!-- Terminal Area -->
+    <section class="terminal-area">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="dot-btn red"></span>
+          <span class="dot-btn yellow"></span>
+          <span class="dot-btn green"></span>
+        </div>
+        <span class="terminal-title">apitester — web terminal</span>
+        <button class="clear-btn" id="clear-btn" title="Clear terminal">⌫ Clear</button>
+      </div>
+      <div id="terminal"></div>
+      <div class="terminal-input-bar">
+        <span class="prompt-prefix">$ apitester</span>
+        <input type="text" id="cmd-input" class="cmd-input" placeholder="get https://... or click a demo →"
+          autocomplete="off" spellcheck="false" />
+        <button class="run-btn" id="run-btn">Run ↵</button>
+      </div>
+      <div class="status-bar">
+        <span id="conn-status" class="conn-connecting">⟳ Connecting...</span>
+        <span class="status-hint">Press <kbd>Enter</kbd> to run, <kbd>↑</kbd> to recall last command</span>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

@@ -141,6 +141,14 @@ apitester.exe stress [URL] [flags]
 apitester.exe get https://httpbin.org/get
 ```
 
+### 🌐 Live Demo
+
+> Try it directly in your browser — no installation required!
+>
+> **[▶ Open Web Terminal](https://apitester-web.onrender.com)**
+>
+> *Architecture Proof: The browser terminal connects via WebSocket to a Go backend, which natively executes the `apitester` Linux binary using `os/exec`. Run `apitester version` in the web UI to verify the backend OS/Architecture!*
+
 ### GET Request with Headers and Authentication
 ```sh
 apitester.exe get https://api.example.com/users --headers "Accept:application/json,User-Agent:MyApp/1.0" --auth "Bearer your_token_here"
@@ -199,10 +207,12 @@ If you don't specify "Bearer" or "Basic", the tool automatically assumes Bearer 
 ```
 
 ### Interactive Body Input
-If you don't specify the `--body` flag for POST, PUT, or PATCH requests, the tool will prompt you to enter the JSON body interactively:
+If you don't specify the `--body` flag for POST, PUT, or PATCH requests, the tool will prompt you to enter the JSON body inline:
 ```sh
 apitester.exe post https://httpbin.org/post
-# Will prompt: "Enter JSON body (end with Ctrl+D or Ctrl+Z on Windows):"
+# Will prompt: "Enter JSON body: "
+# Type your JSON and press Enter:
+# {"name":"John Doe","email":"john@example.com"}
 ```
 
 ### Environment Variables
